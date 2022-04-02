@@ -1,0 +1,26 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+
+    <div id="watchlist_view" class="row">
+        <div id="watchlist_sidebar_div" class="container">
+            {% include 'crypto/_watchlist_sidebar.html' %}
+        </div>
+        <div id="watchlist_table_div">
+            {% include 'crypto/_watchlist_table.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% if notification %}
+        <script type="text/javascript">
+            let text = "{{ notification }}";
+            alert(text);
+        </script>
+    {% endif %}
+
+    <script src="{% static 'js/selectize.js' %}" type="text/javascript">
+    </script>
+{% endblock %}
+

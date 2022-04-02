@@ -1,0 +1,23 @@
+
+<form id="watch_add_coin_form" method="post" action="#">
+    {% csrf_token %}
+    <h4>
+        Add coin
+    </h4>
+    <label for="watch_add_coin_select">
+        Coin
+    </label>
+    <select id="watch_add_coin_select" name="watch_add_coin_select">
+        {% for coin in coins %}
+            <option id="watch_coin_opt_{{ coin.symbol }}" name="watch_coin_opt_{{ coin.symbol }}" value="watch_coin_opt_{{ coin.symbol }}">
+                {{ coin.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <label for="watch_coin_amount_input">
+        Amount
+    </label>
+    <input id="watch_coin_amount_input" type="text" placeholder="0" name="watch_coin_amount_input" value="0">
+    <button form="watch_add_coin_form" id="add_coin_button" name="add_coin" type="submit" value="save"> Add </button>
+</form>
+
