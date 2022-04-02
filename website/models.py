@@ -9,8 +9,6 @@ class Account(models.Model):
     signup_ip = models.CharField(max_length=45, blank=True, null=True)
     friends = models.ManyToManyField('self', blank=True)
     exchanges = models.ManyToManyField('crypto.CryptoExchange', blank=True)
-    
-
 
     def __str__(self):
         return self.user.username

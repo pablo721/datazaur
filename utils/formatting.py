@@ -1,7 +1,5 @@
-from data.constants import *
 import pandas as pd
 import random
-import os
 
 
 def get_random_color():

@@ -1,6 +1,5 @@
-from itertools import chain
 from markets.models import Currency
-from data import constants
+import constants
 
 default = constants.DEFAULT_CURRENCY
 

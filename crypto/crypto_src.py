@@ -1,19 +1,14 @@
-import pandas as pd
-import numpy as np
 import requests
 import os
-import json
 from django.conf import settings
 import ccxt
-import re
 from pycoingecko import CoinGeckoAPI
 from forex_python.converter import CurrencyRates
 
 from .models import *
-from utils.decorators import prep_crypto_display, load_or_save
+from utils.decorators import load_or_save
 from utils.formatting import *
-from data import constants
-
+from config import constants
 
 CURRENCY = constants.DEFAULT_CURRENCY
 API_KEY = os.environ.get("CRYPTOCOMPARE_API_KEY")

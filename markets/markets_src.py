@@ -1,10 +1,5 @@
-from forex_python.converter import CurrencyRates
-import requests
 import investpy
 import datetime
-from utils.decorators import load_or_save
-from utils.formatting import *
-from data import constants
 from website.models import Config
 from crypto.crypto_src import *
 

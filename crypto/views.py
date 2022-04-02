@@ -1,22 +1,18 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
-from itertools import chain
 
 from utils.charts import Chart
-from utils.formatting import *
 from utils.order_currencies import *
 from utils.etl import *
 from website.models import Account, Config
-from .models import *
 from .forms import *
 from .crypto_src import *
 from markets.models import *
 from economics.models import *
-from data import constants
+from config import constants
 
 
 class CryptoView(TemplateView):

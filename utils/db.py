@@ -11,7 +11,7 @@ from markets.models import *
 from website.models import *
 from crypto.models import *
 from economics.models import *
-from data import constants
+from config import constants
 from crypto.crypto_src import get_coins_info
 import datetime
 

@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from .forms import AddFXTicker
 from .markets_src import *
 from website.models import *
-from data import constants
+from config import constants
 
 
 class MarketsView(TemplateView):

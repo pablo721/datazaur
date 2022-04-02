@@ -1,6 +1,3 @@
-from data.constants import DEFAULT_CURRENCY
-import pandas as pd
-import pycountry
 import country_currencies
 from ipwhois import IPWhois
 from .models import Account
