@@ -10,13 +10,13 @@ import re
 from markets.models import *
 from website.models import *
 from crypto.models import *
-from economics.models import *
+from data.models import *
 from config import constants
 from crypto.crypto_src import get_coins_info
 import datetime
 
 
-def load_config(filepath='config.yaml'):
+def load_config(filepath='config/config.yaml'):
 	ext = filepath.split('.')[-1].lower()
 	with open(filepath, 'r') as cfg:
 		if ext == 'json':
@@ -42,7 +42,7 @@ def load_config(filepath='config.yaml'):
 
 def setup_all():
 	funcs = [load_config, load_countries, load_currencies, map_currencies, load_crypto_exchanges, load_cryptocomp_coins]
-	tables = ['website_config', 'economics_country', 'markets_currency', 'markets_currency', 'crypto_cryptoexchange',
+	tables = ['website_config', 'data_country', 'markets_currency', 'markets_currency', 'crypto_cryptoexchange',
 			  'crypto_cryptocurrency']
 	try:
 		for func, table in zip(funcs, tables):

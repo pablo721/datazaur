@@ -1,15 +1,15 @@
-cfg_dir : /config
+cfg_dir : config
 cfg_file : config.yaml
 
 refresh_rate : 600
 
-csv_dir : /csv
+csv_dir : csv
 fx_file : forex.csv
 crypto_file : crypto.csv
 exchanges_file : exchanges.csv
 
-default_currency = USD
-timezone = GMT+2
+default_currency : USD
+timezone : GMT+2
 
 fav_crypto_exchange : binance
 cryptocompare_url : https://cryptocompare.com

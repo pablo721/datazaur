@@ -4,7 +4,7 @@ from django.conf import settings
 import ccxt
 from pycoingecko import CoinGeckoAPI
 from forex_python.converter import CurrencyRates
-
+from markets.models import Ticker
 from .models import *
 from utils.decorators import load_or_save
 from utils.formatting import *
@@ -89,11 +89,11 @@ def update_coin_prices(currency=constants.DEFAULT_CURRENCY):
 	df['quote'] = currency
 	df['ask'] = 0
 	for i, r in df.iterrows():
-		if not CryptoFiatTicker.objects.filter(base=r['base'].upper()).filter(quote=currency).exists():
-			CryptoFiatTicker.objects.create(**r)
+		if not Ticker.objects.filter(base=r['base'].upper()).filter(quote=currency).exists():
+			Ticker.objects.create(**r)
 			n_new += 1
 		else:
-			ticker = CryptoFiatTicker.objects.filter(base=r['base']).filter(quote=currency)[0]
+			ticker = Ticker.objects.filter(base=r['base']).filter(quote=currency)[0]
 			ticker.__dict__.update(**r)
 			ticker.save()
 			n_upd += 1

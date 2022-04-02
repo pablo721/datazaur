@@ -11,7 +11,7 @@ from website.models import Account, Config
 from .forms import *
 from .crypto_src import *
 from markets.models import *
-from economics.models import *
+from data.models import *
 from config import constants
 
 
