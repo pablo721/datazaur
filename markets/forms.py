@@ -1,5 +1,5 @@
 from django import forms
-from .models import Currency
+from data.models import Currency
 
 
 class AddFXTicker(forms.Form):

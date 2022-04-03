@@ -14,8 +14,8 @@ def watchlist_prices(watchlist, quote):
 		if CryptoFiatTicker.objects.filter(base=coin.symbol).filter(quote=quote).exists():
 			n += 1
 			result.loc[coin.symbol] = CryptoFiatTicker.objects.get(base=coin.symbol, quote=quote).__dict__
-			if PortfolioAmounts.objects.filter(watchlist=watchlist).filter(coin=coin).exists():
-				result.loc[coin.symbol, 'amount'] = PortfolioAmounts.objects.get(watchlist=watchlist, coin=coin).amount
+			if Amounts.objects.filter(watchlist=watchlist).filter(coin=coin).exists():
+				result.loc[coin.symbol, 'amount'] = Amounts.objects.get(watchlist=watchlist, coin=coin).amount
 			print(result.loc[coin.symbol])
 	print(f'Found {n} out of {watchlist.count()} prices.')
 	return result

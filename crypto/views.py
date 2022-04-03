@@ -235,7 +235,7 @@ class MoversView(TemplateView):
 
 class WatchlistView(TemplateView):
 	template_name = 'crypto/watchlist.html'
-	model = PortfolioAmounts
+	model = Amounts
 	forms = {'new_watchlist': NewWatchlist, 'add_coin': AddCoin, 'set_source': SetSource, 'delete_coin': DeleteCoin,
 			 'delete_watchlist': DeleteWatchlist, 'change_currency': ChangeCurrency}
 
@@ -269,9 +269,9 @@ class WatchlistView(TemplateView):
 					if coin not in watchlist.coins.all():
 						watchlist.coins.add(coin)
 						watchlist.save()
-						PortfolioAmounts.objects.create(watchlist=watchlist, coin=coin, amount=amount, source=exchange)
+						Amounts.objects.create(watchlist=watchlist, coin=coin, amount=amount, source=exchange)
 					else:
-						amt = PortfolioAmounts.objects.filter(watchlist=watchlist).filter(coin=coin)
+						amt = Amounts.objects.filter(watchlist=watchlist).filter(coin=coin)
 						amt.amount = form_data['amount']
 						amt.source = exchange
 						amt.save()
@@ -314,8 +314,8 @@ class WatchlistView(TemplateView):
 					else:
 						coins = Cryptocurrency.objects.filter(symbol=form_data['coin'])
 					for coin in coins:
-						if PortfolioAmounts.objects.filter(coin=coin).filter(watchlist=watchlist).exists():
-							p = PortfolioAmounts.objects.filter(coin=coin).filter(watchlist=watchlist).first()
+						if Amounts.objects.filter(coin=coin).filter(watchlist=watchlist).exists():
+							p = Amounts.objects.filter(coin=coin).filter(watchlist=watchlist).first()
 							p.source = exchange
 							p.save()
 						else:
