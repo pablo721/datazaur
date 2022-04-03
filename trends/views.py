@@ -2,6 +2,13 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
 
+class TrendsView(TemplateView):
+	template_name = 'trends/trends.html'
+
+	def get_context_data(self, **kwargs):
+
+		return 0
+
 class TwitterView(TemplateView):
 	template_name = 'trends/twitter.html'
 
