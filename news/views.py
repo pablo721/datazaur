@@ -4,7 +4,7 @@ from .forms import AddWebsite
 from .models import Website
 from .data_src import *
 from .news_scrapper import *
-
+from .utils import scrap_news
 
 class DashboardView(TemplateView):
     template_name = 'news/dashboard.html'
@@ -14,11 +14,11 @@ class NewsView(TemplateView):
     template_name = 'news/news.html'
 
     def get_context_data(self, **kwargs):
-        scapped_news = {}
+        scrapped_news = {}
         news = scrap_all_websites()
         for k, v in news.items():
-            scapped_news[k] = pd.DataFrame(v).transpose().to_html(escape=False, justify='center')
-        return {'scrapped_news': scapped_news}
+            scrapped_news[k] = pd.DataFrame(v).to_html(escape=False, justify='center')
+        return {'scrapped_news': scrapped_news}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

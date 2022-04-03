@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+
 import requests
 import yaml
 import os
@@ -7,24 +8,6 @@ from website.models import Config
 from .models import Website
 
 
-def load_websites(filepath='websites.yaml'):
-    try:
-        with open(filepath, 'r') as file:
-            websites = yaml.safe_load(file)
-        count = Website.objects.all().count()
-        upd_count = 0
-        for k, v in websites.items():
-            if Website.objects.filter(url=k).exists():
-                site = Website.objects.get(url=k)
-                site.selector = v
-                site.save()
-                upd_count += 1
-            else:
-                Website.objects.create(url=k, selector=v)
-        print(f'Added {Website.objects.all().count() - count} new websites. \n'
-              f'Updated selectors for {upd_count} websites.')
-    except:
-        return f'File {filepath} must be in current location.'
 
 
 def scrap_website(url, selector, pages=None):
@@ -37,8 +20,11 @@ def scrap_website(url, selector, pages=None):
 def scrap_all_websites():
     results = {}
     for website in Website.objects.all():
-        news = scrap_website(url=website.url, selector=website.selector)
-        results[website.url] = news
+        site_news = []
+        for selector in website.selectors.all():
+            news = scrap_website(url=website.url, selector=selector.text)
+            site_news += news
+        results[website.url] = site_news
     print(f'Scrapped: {results}')
     return results
 
