@@ -1,5 +1,5 @@
 from django import forms
-from markets.models import Currency
+from data.models import Currency
 
 
 

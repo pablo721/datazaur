@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import View, TemplateView
 from .utils import *
-from markets.models import Currency
+from data.models import Currency
 
 
 class HomeView(TemplateView):

@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-from markets.models import Currency
+from data.models import Currency
 
 
 class AddCoin(forms.Form):
