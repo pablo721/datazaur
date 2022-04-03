@@ -23,11 +23,12 @@ class CryptoView(TemplateView):
 		watchlists = []
 		if self.request.user.is_authenticated:
 			currency = self.request.user.user_account.currency_code
-			watchlists = self.request.user.user_account.watchlists.all()
+			if CryptoWatchlist.objects.filter(creator=self.request.user.account).exists():
+				watchlists = self.request.user.user_account.watchlists.all()
 
 		currencies = Currency.objects.all()
 		countries = Country.objects.all()
-		tickers = CryptoFiatTicker.objects.all()
+		tickers = Ticker.objects.all()
 
 		return {'currency': currency, 'currencies': currencies, 'countries': countries, 'tickers': tickers,
 				'watchlists': watchlists}
@@ -346,7 +347,7 @@ class WatchlistView(TemplateView):
 		context['watchlists'] = acc.users_watchlists.all()
 		context['currencies'] = ordered_currencies(currency)
 		context['coins'] = Cryptocurrency.objects.all()
-		context['watchlist'] = watchlist_prices(watchlist)
+		context['watchlist'] = watchlist_prices(watchlist, constants.DEFAULT_CURRENCY)
 
 		print(f"Odreder currs: {context['currencies']}")
 

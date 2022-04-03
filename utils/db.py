@@ -8,12 +8,31 @@ import yaml
 import json
 import re
 from markets.models import *
+from news.models import *
 from website.models import *
 from crypto.models import *
 from data.models import *
 from config import constants
 from crypto.crypto_src import get_coins_info
 import datetime
+
+
+def load_websites(filepath='config/websites.yaml'):
+	with open(filepath, 'r') as file:
+		websites = yaml.safe_load(file)
+		for k, v in websites.items():
+			print(f'Site {k}')
+			print(f'Selectors {v}')
+			if not Website.objects.filter(url=k).exists():
+				Website.objects.create(url=k)
+			site = Website.objects.get(url=k)
+			for selector in v:
+				if not Selector.objects.filter(text=selector).exists():
+					Selector.objects.create(text=selector)
+				s = Selector.objects.get(text=selector)
+				site.selectors.add(s)
+				site.save()
+				print(f'Loaded {len(v)} selectors for {k}')
 
 
 def load_config(filepath='config/config.yaml'):

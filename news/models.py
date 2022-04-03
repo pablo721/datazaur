@@ -1,11 +1,14 @@
 from django.db import models
 
 
+class Selector(models.Model):
+    text = models.CharField(max_length=128, unique=True)
+
 
 class Website(models.Model):
-    title = models.CharField(max_length=64)
+    title = models.CharField(max_length=64, blank=True)
     url = models.CharField(max_length=128)
-    selector = models.CharField(max_length=128, blank=True)
+    selectors = models.ManyToManyField('news.Selector', related_name='website_selector', blank=True)
 
 
 

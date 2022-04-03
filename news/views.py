@@ -15,11 +15,14 @@ class NewsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         scapped_news = {}
-        news = scrap_news()
+        news = scrap_all_websites()
         for k, v in news.items():
             scapped_news[k] = pd.DataFrame(v).transpose().to_html(escape=False, justify='center')
         return {'scrapped_news': scapped_news}
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
 
 
 class CryptoNewsView(TemplateView):
