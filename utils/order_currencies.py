@@ -1,5 +1,5 @@
-from markets.models import Currency
-import constants
+from data.models import Currency
+from config import constants
 
 default = constants.DEFAULT_CURRENCY
 
