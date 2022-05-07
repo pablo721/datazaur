@@ -53,8 +53,7 @@ class CryptoExchange(models.Model):
     monthly_vol = models.FloatField(null=True, blank=True)
 
 
-# portfolio attribute determines whether it is a watchlist (False) or portfolio (True)
-# when portfolio=True, amounts of coins in portfolio can be set through PortfolioAmounts
+
 class CryptoWatchlist(models.Model):
     creator = models.ForeignKey('website.Account', related_name='users_watchlists', on_delete=models.CASCADE)
     followers = models.ManyToManyField('website.Account', related_name='watchlist_followers', blank=True)
