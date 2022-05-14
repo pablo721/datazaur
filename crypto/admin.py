@@ -4,7 +4,7 @@ from .models import *
 
 admin.site.register(Cryptocurrency)
 admin.site.register(CryptoExchange)
-admin.site.register(CryptoWatchlist)
+
 admin.site.register(Amounts)
 admin.site.register(PrivateKey)
 admin.site.register(PublicKey)
