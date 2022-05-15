@@ -44,11 +44,16 @@ INSTALLED_APPS = [
     'django_extensions',
     'crypto',
     'markets',
+    'trade',
+    'watchlist',
+    'portfolio',
     'data',
     'news',
+    '_calendar',
     'messenger',
     'trends',
-    'website'
+    'website',
+    'api'
 ]
 
 MIDDLEWARE = [

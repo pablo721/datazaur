@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from .forms import AddFXTicker
+from .forms import *
 from .markets_src import *
 from website.models import *
 from config import constants

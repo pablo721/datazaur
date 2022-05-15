@@ -12,7 +12,7 @@ urlpatterns = [
     path('trends/', include('trends.urls'), name='trends'),
     path('news/', include('news.urls'), name='news'),
     path('calendar/', include('_calendar.urls'), name='calendar'),
-    path('macro/', include('macro.urls'), name='macro'),
+    path('data/', include('data.urls'), name='data'),
     path('messenger/', include('messenger.urls'), name='messenger'),
     path('', include('website.urls'), name='website'),
 ]
