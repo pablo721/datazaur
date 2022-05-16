@@ -5,7 +5,7 @@ from .forms import *
 
 
 class WatchlistView(TemplateView):
-	template_name = 'watchlist/watchlist.html'
+	template_name = 'watchlist/portfolio.html'
 	model = CryptoWatchlist
 	forms = {'new_watchlist': NewWatchlist, 'add_coin': AddCoin, 'set_source': SetSource, 'delete_coin': DeleteCoin,
 			 'delete_watchlist': DeleteWatchlist, 'change_currency': ChangeCurrency}

@@ -10,6 +10,8 @@ urlpatterns = [
     path('arbitrage/', views.ArbitrageView.as_view(), name='arbitrage'),
     path('stat_arb/', views.StatArbView.as_view(), name='stat_arb'),
     path('signals/', views.SignalsView.as_view(), name='signals'),
-    path('signals/', views.InsiderTradesView.as_view(), name='insiders'),
-
+    path('insider_trades/', views.InsiderTradesView.as_view(), name='insider_trades'),
     ]
+
+
+

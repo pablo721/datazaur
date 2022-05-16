@@ -1,4 +1,4 @@
-import investpy
+
 from pycoingecko import CoinGeckoAPI
 import requests
 import os
@@ -8,17 +8,7 @@ from utils.decorators import load_or_save
 from website.models import Config
 
 
-def econ_calendar():
-    file = 'calendar.csv'
-    refresh_rate = 86400
 
-    if file in os.listdir() and datetime.datetime.now().timestamp() - os.path.getmtime(file) < refresh_rate:
-        calendar = pd.read_csv(file, index_col=0)
-    else:
-        calendar = investpy.economic_calendar()
-        calendar.to_csv(file)
-
-    return calendar
 
 
 filename = 'cryptocomp_news.csv'
@@ -47,6 +37,9 @@ def gecko_events():
     for event in events:
         data.append([event['description'], pd.DataFrame(pd.Series(event)).drop('description').transpose().to_html(escape=False, justify='center')])
     return data
+
+
+
 
 
 def scrap_news():

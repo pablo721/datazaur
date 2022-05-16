@@ -425,11 +425,6 @@ color:white}
 #watchlist_table_div{position:absolute; right:25px; top:25px; width:80%}
 #watchlist_table{width:100%}
 
-td{padding:5px 20px}
-th{padding:15px 25px}
-
-
-
 #watch_del_btn{background:#360812; font-size:18px; position:absolute; left:16px; top:90px}
 #watch_new_btn{background:#083612; font-size:18px; position:absolute; left:125px; top:90px}
 #watch_btns{width:220px; height:120px}
@@ -437,6 +432,23 @@ th{padding:15px 25px}
 #watch_curr_btn{margin:10px; float:right}
 
 
+/* PORTFOLIO */
+
+#portfolio_sidebar_div{position:absolute; top:55px; left:15px; width:220px; margin:10px 10px}
+#portfolios_div{height:300px; width:220px}
+#pf_add_del_form{height:300px; width:220px}
+
+#portfolio_table_div{position:absolute; right:25px; top:25px; width:80%}
+#portfolio_table{width:100%}
 
 
+#pf_del_btn{background:#360812; font-size:18px; position:absolute; left:16px; top:90px}
+#pf_new_btn{background:#083612; font-size:18px; position:absolute; left:125px; top:90px}
+#pf_btns{width:220px; height:120px}
+
+#pf_curr_btn{margin:10px; float:right}
+
+
+td{padding:5px 20px}
+th{padding:15px 25px}
 

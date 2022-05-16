@@ -44,7 +44,7 @@ class TwitterView(TemplateView):
 
 
 class CalendarView(TemplateView):
-    template_name = 'news/calendar.html'
+    template_name = 'news/econ_calendar.html'
 
     def get_context_data(self, **kwargs):
         return {'calendar': investpy.economic_calendar().to_html(escape=False, justify='center')}

@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'datazaur.wsgi.application'
 
 #DATABASE_URL = 'postgres://mhyckrjvahjtjf:901fc27da08a9f252ebd75fea3712b769ca65196438e4a67979edb3df750870c@ec2-34-255-134-200.eu-west-1.compute.amazonaws.com:5432/d9hoo4qbgp6uq9'
 DATABASES = {
-    'default2': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db0',
         'USER': 'postgres',
@@ -101,7 +101,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
         },
-    'default': {
+    'default2': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('HEROKU_DB_NAME'),
         'USER': os.environ.get('HEROKU_DB_USER'),

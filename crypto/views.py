@@ -197,7 +197,7 @@ class GlobalMetricsView(TemplateView):
 
 
 class CryptoCalendarView(TemplateView):
-	template_name = 'crypto/calendar.html'
+	template_name = 'crypto/econ_calendar.html'
 
 
 class NFTView(TemplateView):

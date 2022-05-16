@@ -9,9 +9,6 @@ class DataView(TemplateView):
 
 
 
-class InsiderTradesView(TemplateView):
-    template_name = 'data/insiders.html'
-
 
 class MacroView(TemplateView):
     template_name = 'data/macro.html'
