@@ -13,5 +13,5 @@ urlpatterns = [
     path('movers/', views.MoversView.as_view(), name='movers'),
     path('defi/', views.DeFiView.as_view(), name='defi'),
     path('nft/', views.NFTView.as_view(), name='nft'),
-    path('calendar/', views.CryptoCalendarView.as_view(), name='calendar'),
+    path('change_currency/', views.crypto_change_currency, name='change_currency'),
     ]

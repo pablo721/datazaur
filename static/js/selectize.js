@@ -1,10 +1,9 @@
 
 
 $(document).ready(function () {
-    let lol = $('#id_coin');
-    console.log(lol);
-    lol.selectize({
-      sortField: 'text'
+    let select = $('#crypto_curr_select');
+    select.selectize({
+      sortField: 'value'
         });
     });
 

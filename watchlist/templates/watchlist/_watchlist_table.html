@@ -9,9 +9,6 @@
                 Name
             </th>
             <th>
-                Amount
-            </th>
-            <th>
                 Price
             </th>
             <th>
@@ -44,40 +41,37 @@
         </tr>
     </thead>
     <tbody>
-        {% for coin in watchlist %}
+        {% for ticker in watchlist_prices %}
         <tr>
             <td>
-                {{ coin.symbol }}
+                {{ ticker.base }} / {{ ticker.quote }}
             </td>
             <td>
-                {{ coin.name }}
+                {{ ticker.base_full_name }}
             </td>
             <td>
-                {{ coin.amount }}
+                {{ ticker.bid }}
             </td>
             <td>
-                {{ coin.bid }}
+                {{ ticker.daily_delta }}
             </td>
             <td>
-                {{ coin.ask }}
+                {{ ticker.daily_pct_delta }}
             </td>
             <td>
-                {{ coin.daily_delta }}
+                {{ ticker.daily_low }}
             </td>
             <td>
-                {{ daily_low }}
+                {{ ticker.daily_high }}
             </td>
             <td>
-                {{ daily_high }}
-            </td>
-            <td>
-                {{ daily_vol }}
+                {{ ticker.daily_vol }}
             </td>
             <td>
                 {% include 'crypto/_set_source_form.html' %}
             </td>
             <td>
-                <input type="checkbox" class="star" id="del_{{ coin.symbol }}" name="del_from_watch" value="{{ coin.symbol }}">
+                <input type="checkbox" class="star" id="del_{{ ticker.id }}" name="del_from_watch" value="{{ ticker.base }}">
             </td>
         </tr>
         {% endfor %}

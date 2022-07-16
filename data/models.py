@@ -19,3 +19,5 @@ class Commodity(models.Model):
     symbol = models.CharField(max_length=32, null=True, blank=True)
     description = models.CharField(max_length=256, null=True, blank=True)
     group = models.CharField(max_length=21, choices=enumerate(constants.COMMODITY_GROUPS), null=True, blank=True)
+
+

@@ -12,7 +12,6 @@
     <a href="{% url 'data:macro' %}" class="w3-bar-item w3-button w3-padding-large"> Macro </a>
     <a href="{% url 'data:fundamentals' %}" class="w3-bar-item w3-button w3-padding-large"> Fundamentals </a>
 
-    <a href="{% url 'messenger:messenger' %}" class="w3-bar-item w3-button w3-padding-large"> Messenger </a>
     {% if user.is_authenticated %}
         <a href="{% url 'website:log_out' %}" class="w3-bar-item w3-button w3-padding-large"> Log Out </a>
     {% else %}

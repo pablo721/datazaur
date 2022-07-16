@@ -3,4 +3,4 @@ from .models import *
 
 
 admin.site.register(Website)
-admin.site.register(Article)
+

@@ -4,6 +4,10 @@ from .models import *
 from .forms import *
 
 
+class CalendarView(TemplateView):
+	template_name = '_calendar/calendar.html'
+
+
 class EconCalendarView(TemplateView):
 	template_name = '_calendar/econ_calendar.html'
 

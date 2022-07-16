@@ -1,4 +1,4 @@
-
+import investpy
 import pandas as pd
 import pycountry
 import country_currencies
@@ -60,23 +60,25 @@ def load_config(filepath='config/config.yaml'):
 
 
 def setup_all():
-	funcs = [load_config, load_countries, load_currencies, map_currencies, load_crypto_exchanges, load_cryptocomp_coins]
-	tables = ['website_config', 'data_country', 'markets_currency', 'markets_currency', 'crypto_cryptoexchange',
-			  'crypto_cryptocurrency']
+	funcs = [load_config, load_countries, load_currencies, map_currencies, load_fx_tickers, load_crypto_exchanges, load_cryptocomp_coins]
+	tables = ['website_config', 'data_country', 'markets_currency', 'markets_currency', 'markets_ticker',
+			  'crypto_cryptoexchange', 'crypto_cryptocurrency']
 	try:
 		for func, table in zip(funcs, tables):
 			func()
 			timestamp = datetime.datetime.now()
-			if not Updates.objects.filter(table=table).exists():
-				Updates.objects.create(table=table, timestamp=timestamp)
+			if not Log.objects.filter(table=table).exists():
+				Log.objects.create(table=table, timestamp=timestamp)
 			else:
-				upd = Updates.objects.get(table=table)
-				upd.timestamp = timestamp
-				upd.save()
+				log = Log.objects.get(table=table)
+				log.timestamp = timestamp
+				log.save()
 
 	except Exception as e:
 		print(f'Error: {e}')
 
+	finally:
+		print('Setup done.')
 
 
 def load_cryptocomp_coins():
@@ -178,5 +180,43 @@ def connect_exchange(exchange_id, quote='USDT'):
 
 def filter_by_quote(ticker, quote='USDT'):
 	return ticker.split('/')[1].__eq__(quote)
+
+
+
+def load_fx_tickers(base='USD'):
+	crosses = investpy.get_currency_crosses()
+	for i, row in crosses.iterrows():
+		if not Ticker.objects.filter(base=row['base']).filter(quote=row['second']).exists():
+			Ticker.objects.create(asset_class='fx', base=row['base'], quote=row['second'], base_full_name=row['base_name'],
+								  quote_full_name=row['second_name'])
+
+
+def update_fx_rates(base='USD'):
+	rates = investpy.get_currency_crosses_overview(base, False, 1000)
+	for i, row in rates.iterrows():
+		print(row)
+		if '/' not in row['symbol']:
+			continue
+		base = row['symbol'].split('/')[0]
+		quote = row['symbol'].split('/')[1]
+		if Ticker.objects.filter(base=base).filter(quote=quote).exists():
+			ticker = Ticker.objects.get(base=base, quote=quote)
+		else:
+			ticker = Ticker.objects.create(base=base, quote=quote)
+
+		ticker.bid = row['bid']
+		ticker.ask = row['ask']
+		ticker.mid = (row['bid'] + row['ask']) / 2
+		ticker.daily_delta = row['change']
+		ticker.daily_delta_pct = row['change_percentage']
+		ticker.daily_low = row['low']
+		ticker.daily_high = row['high']
+
+		ticker.save()
+
+
+
+
+
 
 

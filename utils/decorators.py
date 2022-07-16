@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 import re
 from utils.formatting import color_cell, add_hyperlinks
+from utils.fx import convert_fx
 from website.models import Config
 
 

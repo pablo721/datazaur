@@ -8,6 +8,7 @@ from markets.models import Ticker
 from .models import *
 from utils.decorators import load_or_save
 from utils.formatting import *
+from utils.fx import *
 from config import constants
 
 CURRENCY = constants.DEFAULT_CURRENCY
@@ -16,7 +17,7 @@ API_KEY = os.environ.get("CRYPTOCOMPARE_API_KEY")
 
 def gecko_quote(base, quote):
 	gecko = pycoingecko.CoinGeckoAPI()
-	coin = CryptoCURRENCY.objects.filter(symbol=base).first().coin_id
+	coin = Cryptocurrency.objects.filter(symbol=base).first().coin_id
 	data = gecko.get_coin_by_id(coin)['market_data']
 	price = data['current_price'][quote]
 	mcap = data['market_cap']
@@ -38,29 +39,7 @@ def find_quotes(base, quote, exchanges):
 	return quotes
 
 
-def get_crypto_value(coin, quote, amount):
-	coins = top_coins_by_mcap()
 
-	if CURRENCY != quote:
-		rates = CurrencyRates()
-		exchange_rate = rates.get_rate(CURRENCY, quote)
-	else:
-		exchange_rate = 1
-
-	price = coins[coins['Symbol'] == coin]['Price'].iloc[0]
-	return amount * price * exchange_rate
-
-
-def get_portfolio_value(portfolio, CURRENCY):
-	value = 0
-	currencies = settings.SORTED_CURRENCIES
-	for k, v in portfolio.items():
-		if k in currencies:
-			value += get_CURRENCY_value(k, CURRENCY, v)
-		else:
-			value += get_crypto_value(k, CURRENCY, v)
-
-	return value
 
 
 
@@ -76,7 +55,24 @@ def get_coins_info():
 	return data
 
 
-def update_coin_prices(currency=constants.DEFAULT_CURRENCY):
+
+def get_coin_price(symbol, quote):
+	if quote != 'USD':
+		rate = convert_rate('USD', quote)
+	else:
+		rate = 1
+	if Ticker.objects.filter(base=symbol).filter(quote=quote).exists():
+		bid_price = Ticker.objects.get(base=symbol, quote=quote).bid
+		ask_price = Ticker.objects.get(base=symbol, quote=quote).ask
+		if bid_price:
+			return [bid_price * rate, ask_price * rate if ask_price else 0]
+	else:
+		pass
+
+
+
+
+def update_coin_prices(currency='USD'):
 	n_new = 0
 	n_upd = 0
 	url = f'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym={currency}&api_key={API_KEY}'
@@ -105,19 +101,30 @@ def update_coin_prices(currency=constants.DEFAULT_CURRENCY):
 
 
 
-@load_or_save('crypto.csv', 1200)
-def top_coins_by_mcap():
-	url = f'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym={CURRENCY}&api_key={API_KEY}'
-	cols = f'CoinInfo.Name CoinInfo.FullName CoinInfo.Url RAW.{CURRENCY}.PRICE ' \
-		   f'RAW.{CURRENCY}.CHANGEPCTHOUR RAW.{CURRENCY}.CHANGEPCT24HOUR ' \
-		   f'RAW.{CURRENCY}.TOTALVOLUME24HTO ' \
-		   f'RAW.{CURRENCY}.MKTCAP RAW.{CURRENCY}.SUPPLY RAW.{CURRENCY}.LASTUPDATE'.split()
+# @load_or_save('crypto.csv', 1200)
+
+
+def top_coins_by_mcap(currency='USD'):
+	if not currency:
+		currency = constants.DEFAULT_CURRENCY
+
+	print(f'top coins curr: {currency}')
+
+	url = f'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym={currency}&api_key={API_KEY}'
+	cols = f'CoinInfo.Name CoinInfo.FullName CoinInfo.Url RAW.{currency}.PRICE ' \
+		   f'RAW.{currency}.CHANGEPCTHOUR RAW.{currency}.CHANGEPCT24HOUR ' \
+		   f'RAW.{currency}.TOTALVOLUME24HTO ' \
+		   f'RAW.{currency}.MKTCAP RAW.{currency}.SUPPLY RAW.{currency}.LASTUPDATE'.split()
+
 	df = pd.json_normalize(requests.get(url).json()['Data']).loc[:, cols]
-	df.columns = ['Symbol', 'Name', 'Url', 'Price', '1h Δ', '24h Δ', '24h vol', f'Market cap ({CURRENCY})',
+
+	df.columns = ['Symbol', 'Name', 'Url', 'Price', '1h Δ', '24h Δ', '24h vol', f'Market cap ({currency})',
 				  'Supply', 'Updated']
 	df.dropna(inplace=True)
 	df.iloc[:, 3:6] = df.iloc[:, 3:6].astype('float64').round(3)
 	df.iloc[:, 6:9] = df.iloc[:, 6:9].astype('int64')
+
+	df.currency = currency
 
 	return prepare_df_display(df)
 

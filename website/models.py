@@ -20,7 +20,7 @@ class Config(models.Model):
 
 
 
-class Updates(models.Model):
+class Log(models.Model):
     table = models.CharField(max_length=32)
     timestamp = models.DateTimeField()
 

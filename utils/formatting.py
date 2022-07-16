@@ -43,6 +43,7 @@ def prepare_df_display(df, n_decimals=2):
 				lambda x: format(float(x.replace(',', '')).__round__(n_decimals), ',') if type(x) == str else
 				format(float(x).__round__(n_decimals), ','))
 			if 'Δ' in col:
+				df[col] = df[col].apply(lambda x: f'{x}%')
 				df[col] = df[col].apply(color_cell)
 
 	if 'Url' in df.columns:

@@ -1,37 +1,124 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
+import re
 
 from utils.charts import Chart
-from utils.order_currencies import *
-from utils.etl import *
+from utils.fx import get_currency, ordered_currencies, convert_fx
 from website.models import Account, Config
-from .forms import *
-from .crypto_src import *
 from markets.models import *
 from data.models import *
 from config import constants
+from watchlist.models import Watchlist
+from .forms import *
+from .crypto_src import *
+
+
+def crypto_change_currency(request):
+	print(f'crypto chg curr post req: {request.POST}')
+	try:
+		acc = request.user.user_account
+		acc.currency_code = request.POST['currency_code']
+		acc.save()
+		return redirect('crypto:crypto')
+
+	except Exception as e:
+		print(f'Couldnt change currency due to error: {e}')
+		return HttpResponse(f'Couldnt change currency due to error: {e}')
+
 
 
 class CryptoView(TemplateView):
 	template_name = 'crypto/crypto.html'
 
+
+	def post(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return render(request, 'website/login_required.html')
+
+		acc = request.user.user_account
+
+		if request.is_ajax:
+			if 'checked_symbols' in str(request.POST):
+				print('ajax2')
+				print(request.POST)
+				symbols = request.POST['checked_symbols'].split(',')
+				coin_ids = [symbol.split('_')[1].lower() for symbol in symbols if '_' in symbol]
+				print(coin_ids)
+				watchlist.coins.clear()
+				for symbol in coin_ids:
+					watchlist.coins.add(Cryptocurrency.objects.filter(symbol=symbol).first())
+				context['watchlist_ids'] = coin_ids
+
+			elif 'new_currency' in str(request.POST):
+				print(f'crypto view changing curr')
+				print(request.POST)
+				new_currency_code = request.POST['new_currency']
+				if not Currency.objects.filter(alpha_3=new_currency_code).exists():
+					return HttpResponse('No such currency')
+				else:
+					acc.currency_code = new_currency_code
+					acc.save()
+					return HttpResponseRedirect(reverse('crypto:crypto', args=()))
+
+
+		elif 'amount' in str(request.POST):
+			print('add to portfolio')
+			print(request.POST)
+			coin_id = request.POST['coin']
+			new_amount = request.POST['amount']
+			portfolio = Portfolio.objects.get(creator=account)
+			if Amounts.objects.filter(portfolio=portfolio).filter(coin=coin_id).exists():
+				amount = Amounts.objects.filter(portfolio=portfolio).filter(coin=coin_id)
+				amount.amount += new_amount
+				print(f'added {amount} to {coin_id}')
+			else:
+				amount = Amounts.objects.create(portfolio=portfolio, coin=coin_id, amount=new_amount)
+				print(f'created {amount} of {coin_id}')
+			amount.save()
+
+		return HttpResponseRedirect(reverse('crypto:crypto', args=()))
+
+
 	def get_context_data(self, **kwargs):
-		currency = constants.DEFAULT_CURRENCY
+		account = self.request.user.user_account
+		currency = get_currency(self.request)
+		currency_code = currency.alpha_3
+		print(f'crypto curr: {currency}')
+		print(f'users curr: {account.currency_code}')
 		watchlists = []
 		if self.request.user.is_authenticated:
-			currency = self.request.user.user_account.currency_code
-			if CryptoWatchlist.objects.filter(creator=self.request.user.account).exists():
-				watchlists = self.request.user.user_account.watchlists.all()
+			if Watchlist.objects.filter(creator=self.request.user.user_account).exists():
+				watchlists = self.request.user.user_account.users_watchlists.all()
 
+		account = self.request.user.user_account
 		currencies = Currency.objects.all()
 		countries = Country.objects.all()
 		tickers = Ticker.objects.all()
+		watchlist = Watchlist.objects.filter(creator=account).first()
+		coins = watchlist.tickers.all()
+		watchlist_ids = [c.base for c in coins]
+		table = top_coins_by_mcap()
+		cols = [table.columns[n] for n in [2, 5, 6]]
+
+		if currency_code != 'USD':
+			print(f'table currL {table.currency} user curr: {currency_code}')
+			print(table)
+			table = convert_fx(table, cols, table.currency, currency_code)
+			print('converted')
+			print(table)
+
+		table['Watchlist'] = table['Symbol'].apply(lambda
+													   x: f"""<input type="checkbox" name="watch_{x}" id="watch_{x.split('</a>')[0].split('>')[1]}" class="star">""")
+		table['Portfolio'] = table['Symbol'].apply(lambda
+													   x: f""" <button type="submit" name="add_to_pf" value="{x.split('</a>')[0].split('>')[1]}"> Add </button>""")
+		table = table.to_html(escape=False, justify='center')
+
 
 		return {'currency': currency, 'currencies': currencies, 'countries': countries, 'tickers': tickers,
-				'watchlists': watchlists}
+				'watchlists': watchlists, 'watchlist_ids': watchlist_ids, 'table': table}
 
 
 # table['Watchlist'] = table['Symbol'].apply(lambda
@@ -232,5 +319,3 @@ class MoversView(TemplateView):
 		losers = prepare_df_display(losers)
 		return {'timeframes': timeframes, 'gainers_table': gainers.to_html(justify='center', escape=False),
 				'losers_table': losers.to_html(justify='center', escape=False)}
-
-

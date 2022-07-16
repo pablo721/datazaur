@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,18 +45,13 @@ INSTALLED_APPS = [
     'django_extensions',
     'crypto',
     'markets',
-    'trade',
     'watchlist',
-    'portfolio',
     'data',
     'news',
     '_calendar',
-    'messenger',
-    'trends',
     'website',
     'api'
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

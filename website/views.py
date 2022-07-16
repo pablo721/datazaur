@@ -3,8 +3,11 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import View, TemplateView
+
+from config import constants
 from .utils import *
 from data.models import Currency
+
 
 
 class HomeView(TemplateView):
@@ -83,7 +86,7 @@ class SignUpView(TemplateView):
         return render(request, self.templates['fail'], context)
 
     def get_context_data(self, **kwargs):
-        currencies = ordered_currencies()
+        currencies = constants.SORTED_CURRENCIES
         return {'signup_form': self.form, 'currencies': currencies}
 
 
