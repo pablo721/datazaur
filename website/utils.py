@@ -35,10 +35,10 @@ def setup_account(request, user):
         print(f'Error: {e}')
     finally:
         account = Account.objects.create(user=user, currency_code=currency_code, signup_ip=ip, signup_location=location)
-        if Currency.objects.filter(alpha_3=currency_code).exists():
-            currency = Currency.objects.get(alpha_3=currency_code)
+        if Currency.objects.filter(code=currency_code).exists():
+            currency = Currency.objects.get(code=currency_code)
         else:
-            currency = Currency.objects.get(alpha_3='USD')
+            currency = Currency.objects.get(code='USD')
 
         Watchlist.objects.create(creator=account, name='Watchlist', currency=currency)
         print(f'Account: {user.username} has been setup.')

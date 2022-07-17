@@ -4,14 +4,14 @@ $('#crypto_curr_select').change(
     function changeCurrencyCrypto(){
 
             console.log('changing curr js');
-            let alpha_3 = this.value;
-            console.log(alpha_3);
-            if (alpha_3){
+            let code = this.value;
+            console.log(code);
+            if (code){
                 $.ajax({
                 type: 'POST',
                 url: '/crypto/change_currency/',
                 data: {
-                    currency_code: alpha_3,
+                    currency_code: code,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 },
                 success: function(){

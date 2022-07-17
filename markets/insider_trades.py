@@ -13,4 +13,4 @@ test = json.loads(r.text)
 
 df = pd.DataFrame(test['data'])
 
-df.to_csv('df66.csv')
+df.to_csv('df66.files')

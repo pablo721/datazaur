@@ -1,12 +1,13 @@
 from django.db import models
 from config import constants
+from data.models import Asset
 
 
 class Cryptocurrency(models.Model):
     name = models.CharField(max_length=64)
-    symbol = models.CharField(max_length=32)
-    url = models.CharField(max_length=256, null=True, blank=True)
+    symbol = models.CharField(max_length=32, null=True, blank=True)
     description = models.CharField(max_length=256, null=True, blank=True)
+    url = models.CharField(max_length=256, null=True, blank=True)
     hash_algorithm = models.CharField(max_length=64, null=True, blank=True)
     proof_type = models.CharField(max_length=32, null=True, blank=True)
 

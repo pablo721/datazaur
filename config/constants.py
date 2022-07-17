@@ -63,3 +63,5 @@ CONSENSUS_MECHANISMS = ['proof-of-work', 'proof-of-stake', 'proof-of-capacity', 
 
 DEFAULT_CRYPTO_EXCHANGES = ['binance', 'kraken', 'bittrex', 'poloniex', 'coinbase', 'ftx', 'huobi']
 CRYPTO_EXCHANGE_GRADES = ['A', 'B', 'C', 'NA']
+
+

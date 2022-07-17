@@ -4,8 +4,8 @@
     <h5> Change currency </h5>
     <select id="watch_curr_select" name="watch_curr_select">
         {% for currency in currencies %}
-            <option id="watch_curr_opt_{{ currency.alpha_3 }}" name="watch_curr_opt_{{ currency.alpha_3 }}">
-                {{ currency.name }} ({{ currency.alpha_3 }})
+            <option id="watch_curr_opt_{{ currency.code }}" name="watch_curr_opt_{{ currency.code }}">
+                {{ currency.name }} ({{ currency.code }})
             </option>
         {% endfor %}
     </select>

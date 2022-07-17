@@ -32,7 +32,7 @@ def all_markets_data():
 	yields = get_yields_table(TENOR)
 	data['yields'] = prep_market_df(yields).to_html(escape=False, justify='center')
 
-	commodities_file = 'commodities.csv'
+	commodities_file = 'commodities.files'
 	if commodities_file in os.listdir() and datetime.datetime.now().timestamp() - os.path.getmtime(commodities_file) < refresh_rate:
 		data['commodities'] = pd.read_csv(commodities_file, index_col=0)
 	else:
@@ -41,7 +41,7 @@ def all_markets_data():
 	return data
 
 
-@load_or_save('crypto_small.csv', 600)
+@load_or_save('crypto_small.files', 600)
 def coins_by_mcap():
 	url = f'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=50&tsym={CURRENCY}&api_key={API_KEY}'
 	cols = f'CoinInfo.Name RAW.{CURRENCY}.PRICE RAW.{CURRENCY}.CHANGE24HOUR RAW.{CURRENCY}.CHANGEPCT24HOUR'.split()
@@ -50,7 +50,7 @@ def coins_by_mcap():
 	return df
 
 
-@load_or_save('indices.csv', 1800)
+@load_or_save('indices.files', 1800)
 def get_indices_table():
 	indices = constants.STOCK_INDICES
 	result = pd.DataFrame(columns=['Index', 'Price', '24h Δ', '24h %Δ'])
@@ -71,7 +71,7 @@ def get_indices_table():
 	return result
 
 
-@load_or_save('yields.csv', 1800)
+@load_or_save('yields.files', 1800)
 def get_yields_table(tenor='10Y'):
 	result = pd.DataFrame(columns=['Bond', 'Yield', '24h Δ', '24h %Δ'])
 	today = datetime.date.today()
@@ -80,8 +80,8 @@ def get_yields_table(tenor='10Y'):
 	end_date = today - datetime.timedelta(days=n_days_diff - 1)
 	start_date = datetime.datetime.strptime(str(start_date), "%Y-%m-%d").strftime("%d/%m/%Y")
 	end_date = datetime.datetime.strptime(str(end_date), "%Y-%m-%d").strftime("%d/%m/%Y")
-	if 'yields.csv' in os.listdir():
-		countries = [bond.split(' 10')[0] for bond in pd.read_csv('yields.csv', index_col=0)['Bond']]
+	if 'yields.files' in os.listdir():
+		countries = [bond.split(' 10')[0] for bond in pd.read_csv('yields.files', index_col=0)['Bond']]
 	else:
 		countries = investpy.get_bond_countries()
 	for country in countries:
@@ -121,7 +121,7 @@ def get_yield_curves():
 			print(f'error {e}')
 
 	print(result)
-	# pd.DataFrame(result).to_csv('yield_curves.csv')
+	# pd.DataFrame(result).to_csv('yield_curves.files')
 	return result
 
 
@@ -143,7 +143,7 @@ def get_commodities():
 	return tables
 
 
-@load_or_save('forex.csv', 1800)
+@load_or_save('forex.files', 1800)
 def get_fx_rates(base_currency):
 	return investpy.get_currency_crosses_overview(base_currency)[['symbol', 'bid', 'change', 'change_percentage']]
 

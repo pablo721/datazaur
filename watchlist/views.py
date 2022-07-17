@@ -37,7 +37,7 @@ class WatchlistView(TemplateView):
 
 		if 'watch_add_coin' in str(request.POST):
 			coin_id = request.POST['watch_add_coin_select']
-			currency_code = get_currency(request).alpha_3
+			currency_code = get_currency(request).code
 
 			print(coin_id)
 			if not Ticker.objects.filter(base=coin_id).filter(quote=currency_code).exists():
@@ -68,7 +68,7 @@ class WatchlistView(TemplateView):
 			if watchlist_form.is_valid():
 				form_data = watchlist_form.cleaned_data
 				form_data.update({'creator': request.user.user_account})
-				form_data.update({'currency': Currency.objects.get(alpha_3=form_data['currency'])})
+				form_data.update({'currency': Currency.objects.get(code=form_data['currency'])})
 				Watchlist.objects.create(**form_data)
 			else:
 				print(f'Errors: {watchlist_form.errors}')

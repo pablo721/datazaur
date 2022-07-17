@@ -9,8 +9,8 @@
     </p>
     <select id="su_curr_select" name="su_curr_select">
         {% for currency in currencies %}
-            <option name="su_curr_option" value="{{ currency.alpha_3 }}">
-                {{ currency.name }} ({{ currency.alpha_3 }})
+            <option name="su_curr_option" value="{{ currency.code }}">
+                {{ currency.name }} ({{ currency.code }})
             </option>
         {% endfor %}
     </select>

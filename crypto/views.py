@@ -56,7 +56,7 @@ class CryptoView(TemplateView):
 				print(f'crypto view changing curr')
 				print(request.POST)
 				new_currency_code = request.POST['new_currency']
-				if not Currency.objects.filter(alpha_3=new_currency_code).exists():
+				if not Currency.objects.filter(code=new_currency_code).exists():
 					return HttpResponse('No such currency')
 				else:
 					acc.currency_code = new_currency_code
@@ -85,7 +85,7 @@ class CryptoView(TemplateView):
 	def get_context_data(self, **kwargs):
 		account = self.request.user.user_account
 		currency = get_currency(self.request)
-		currency_code = currency.alpha_3
+		currency_code = currency.code
 		print(f'crypto curr: {currency}')
 		print(f'users curr: {account.currency_code}')
 		watchlists = []
@@ -229,7 +229,7 @@ class DominanceView(DetailView):
 		top_n_choices.remove(top_n_coins)
 		top_n_choices.insert(0, top_n_coins)
 		PALETTE = [get_random_color() for i in range(top_n_coins)]
-		df = pd.read_csv('crypto.csv', index_col=0).iloc[:top_n_coins][['Symbol', mcap_col]]
+		df = pd.read_csv('crypto.files', index_col=0).iloc[:top_n_coins][['Symbol', mcap_col]]
 		df[mcap_col] = df[mcap_col].apply(lambda x: x.replace(',', ''))
 		df['Dominance'] = df[mcap_col].apply(lambda x: 100 * float(x) / sum(df[mcap_col].astype('float64')))
 		# df.loc[:, mcap_col] = list(map(lambda x: format(x, ','), df.loc[:, mcap_col]))
@@ -260,7 +260,7 @@ def dominance(request):
 		top_n_choices.remove(top_n_coins)
 		top_n_choices.insert(0, top_n_coins)
 		PALETTE = [get_random_color() for i in range(top_n_coins)]
-		df = pd.read_csv('crypto.csv', index_col=0).iloc[:top_n_coins][['Symbol', mcap_col]]
+		df = pd.read_csv('crypto.files', index_col=0).iloc[:top_n_coins][['Symbol', mcap_col]]
 		df[mcap_col] = df[mcap_col].apply(lambda x: x.replace(',', ''))
 		df['Dominance'] = df[mcap_col].apply(lambda x: 100 * float(x) / sum(df[mcap_col].astype('float64')))
 		# df.loc[:, mcap_col] = list(map(lambda x: format(x, ','), df.loc[:, mcap_col]))
@@ -300,7 +300,7 @@ class MoversView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		filename = Config.objects.get(key='crypto_file') if Config.objects.get(
-			key='crypto_file').exists() else 'crypto.csv'
+			key='crypto_file').exists() else 'crypto.files'
 		refresh_rate = Config.objects.get(key='refresh_rate') if Config.objects.get(
 			key='refresh_rate').exists() else 600
 		if filename in os.listdir() and datetime.datetime.now().timestamp() - os.path.getmtime(filename) < refresh_rate:

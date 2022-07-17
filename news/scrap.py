@@ -44,7 +44,7 @@ def main():
         print(f'error {e}')
     finally:
         df = pd.DataFrame(columns=['NFT'], data={'NFT': nfts})
-        df.to_csv('nftki.csv')
+        df.to_csv('nftki.files')
 
         print('done')
 

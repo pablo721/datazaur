@@ -48,7 +48,7 @@ class NewWatchlist(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['currency'].choices = ((c.alpha_3, c.name) for c in Currency.objects.all())
+        self.fields['currency'].choices = ((c.code, c.name) for c in Currency.objects.all())
         self.fields['source'].choices = ((e.id, e.name) for e in CryptoExchange.objects.all())
 
 
@@ -125,7 +125,7 @@ class NewPortfolio(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['currency'].choices = ((c.alpha_3, c.name) for c in Currency.objects.all())
+        self.fields['currency'].choices = ((c.code, c.name) for c in Currency.objects.all())
         self.fields['source'].choices = ((e.id, e.name) for e in CryptoExchange.objects.all())
 
 

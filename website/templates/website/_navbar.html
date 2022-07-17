@@ -9,7 +9,7 @@
     <a href="{% url 'watchlist:portfolio' %}" class="w3-bar-item w3-button w3-padding-large"> Portfolio </a>
     <a href="{% url 'trends:trends' %}" class="w3-bar-item w3-button w3-padding-large"> Trends </a>
     <a href="{% url 'news:news' %}" class="w3-bar-item w3-button w3-padding-large"> News </a>
-    <a href="{% url '_calendar:calendar' %}" class="w3-bar-item w3-button w3-padding-large"> Calendar </a>
+    <a href="{% url 'calendar_:calendar' %}" class="w3-bar-item w3-button w3-padding-large"> Calendar </a>
     {% if user.is_authenticated %}
         <a href="{% url 'website:log_out' %}" class="w3-bar-item w3-button w3-padding-large"> Log Out </a>
     {% else %}

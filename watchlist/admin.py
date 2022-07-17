@@ -3,7 +3,7 @@ from .models import *
 
 
 admin.site.register(Watchlist)
-admin.site.register(CryptoPortfolio)
+admin.site.register(Portfolio)
 admin.site.register(Amounts)
 
 

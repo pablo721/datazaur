@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'watchlist',
     'data',
     'news',
-    '_calendar',
+    'calendar_',
     'website',
     'api'
 ]

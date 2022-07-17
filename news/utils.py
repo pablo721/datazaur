@@ -11,7 +11,7 @@ from website.models import Config
 
 
 
-filename = 'cryptocomp_news.csv'
+filename = 'cryptocomp_news.files'
 
 @load_or_save(filename, 86400)
 def cryptocomp_news():
@@ -29,7 +29,7 @@ def cryptocomp_news():
 
 
 
-@load_or_save('gecko_events.csv', 86400)
+@load_or_save('gecko_events.files', 86400)
 def gecko_events():
     data = []
     gecko = CoinGeckoAPI()

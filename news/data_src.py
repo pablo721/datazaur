@@ -8,11 +8,11 @@ import datetime
 
 api_key = '70d54fd6e56db84eba0a9d9166b4d5da087c79d3d6cc0511e69144270f90c09b'
 url = f'https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key={api_key}'
-filename = 'cryptocomp_news.csv'
+filename = 'cryptocomp_news.files'
 refresh_rate = 86400
 
 
-@load_or_save('cryptocomp_news.csv', 86400)
+@load_or_save('cryptocomp_news.files', 86400)
 def cryptocomp_news():
     df = pd.json_normalize(requests.get(url).json()['Data'])[['published_on', 'title', 'url', 'source', 'body',
                                                               'categories']]
@@ -26,7 +26,7 @@ def cryptocomp_news():
 
 
 
-@load_or_save('gecko_events.csv', 86400)
+@load_or_save('gecko_events.files', 86400)
 def gecko_events():
     data = []
     gecko = CoinGeckoAPI()
@@ -38,7 +38,7 @@ def gecko_events():
     return data
 
 
-#@load_or_save('gecko_global_metrics.csv', 86400)
+#@load_or_save('gecko_global_metrics.files', 86400)
 def gecko_global_metrics():
     gecko = CoinGeckoAPI()
     data = gecko.get_global()

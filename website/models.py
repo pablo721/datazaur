@@ -19,10 +19,18 @@ class Config(models.Model):
     value = models.CharField(max_length=256)
 
 
-
+# status 0 - executed correctly; 1 - error
 class Log(models.Model):
-    table = models.CharField(max_length=32)
+    source = models.CharField(max_length=64)
     timestamp = models.DateTimeField()
+    status = models.IntegerField(blank=True, null=True)
+    message = models.CharField(max_length=512, blank=True, null=True)
+
+
+class Update(models.Model):
+    table = models.CharField(max_length=32, unique=True)
+    timestamp = models.DateTimeField()
+
 
 
 

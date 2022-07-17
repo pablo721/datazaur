@@ -12,9 +12,9 @@
         </div>
         <div id="crypto_chg_curr">
             <select id="crypto_curr_select">
-                <option id="curr_first_opt" name="curr_first_opt" value="{{ currency.alpha_3 }}"> {{ currency.alpha_3 }} </option>
+                <option id="curr_first_opt" name="curr_first_opt" value="{{ currency.code }}"> {{ currency.code }} </option>
                 {% for curr in currencies %}
-                    <option id="{{ curr.alpha_3 }}" name="currency" value="{{ curr.alpha_3 }}"> {{ curr.alpha_3 }} </option>
+                    <option id="{{ curr.code }}" name="currency" value="{{ curr.code }}"> {{ curr.code }} </option>
                 {% endfor %}
             </select>
         </div>

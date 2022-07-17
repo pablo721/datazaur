@@ -101,7 +101,7 @@ def update_coin_prices(currency='USD'):
 
 
 
-# @load_or_save('crypto.csv', 1200)
+# @load_or_save('crypto.files', 1200)
 
 
 def top_coins_by_mcap(currency='USD'):
@@ -133,7 +133,7 @@ def top_coins_by_mcap(currency='USD'):
 
 
 
-@load_or_save('exchanges.csv', 86400)
+@load_or_save('exchanges.files', 86400)
 def exchanges_by_vol():
 	url = f'https://min-api.cryptocompare.com/data/exchanges/general?api_key={API_KEY}&tsym={CURRENCY}'
 	df = pd.DataFrame(requests.get(url).json()['Data']).transpose()[
@@ -156,7 +156,7 @@ def global_metrics():
 
 
 def market_dominance(top_n_coins):
-	filename = '~/PycharmProjects/datazaur_web/crypto.csv'
+	filename = '~/PycharmProjects/datazaur_web/crypto.files'
 	coins = pd.read_csv(filename, index_col=0).loc[:top_n_coins, f'Market cap ({CURRENCY})']
 
 

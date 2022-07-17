@@ -3,10 +3,10 @@ cfg_file : config.yaml
 
 refresh_rate : 600
 
-csv_dir : csv
-fx_file : forex.csv
-crypto_file : crypto.csv
-exchanges_file : exchanges.csv
+csv_dir : files
+fx_file : forex.files
+crypto_file : crypto.files
+exchanges_file : exchanges.files
 
 default_currency : USD
 timezone : GMT+2
@@ -20,3 +20,5 @@ heroku_user : iaxkzlaedvggqf
 heroku_password : 320810e22b095f173b05acedb571fdc571dbdd57161c2d203af5651f0d8d4510
 heroku_host : ec2-99-80-170-190.eu-west-1.compute.amazonaws.com
 heroku_port : 5432
+
+asset_classes : [crypto, fx, commodities, assets, bonds]
